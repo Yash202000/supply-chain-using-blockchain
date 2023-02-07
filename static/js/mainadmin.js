@@ -34,12 +34,14 @@ $('.add-Collection-handler').on('click', function() {
     document.getElementById("Popup").style.display = "block";
     document.getElementById("title").innerHTML = "Add New Collection Handler"
     document.getElementById("error-message").innerHTML = "";
+    location.href="/collection_handler";
 });
 
 $('.add-Reception-handler').on('click', function() {
     document.getElementById("Popup").style.display = "block";
     document.getElementById("title").innerHTML = "Add New Reception Handler"
     document.getElementById("error-message").innerHTML = "";
+
 });
 
 $('.add-Treatment-handler').on('click', function() {

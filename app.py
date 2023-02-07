@@ -10,6 +10,7 @@ def home():
     return render_template("index.html")
 
 
+
     
 
 @app.route('/login', methods =["GET", "POST"])
@@ -17,13 +18,9 @@ def login():
     if request.method == "POST":
         emailid = request.form.get("emailid")
         password = request.form.get("password")
+        print(emailid,password)
         if emailid=="admin@gmail.com" and password=="admin":
             return render_template('admin.html')
-        else:
-            """
-            add check in database part...
-            """
-            return render_template("admin.html")
        
     return render_template('login.html')
 
@@ -33,9 +30,28 @@ def collection():
     return render_template("Collection.html")
 
 
-@app.route('/reception')
-def reception():
-    return render_template("Reception.html")
+@app.route('/collection_handler',methods =["GET", "POST"])
+def collection_handler():
+    if request.method == "POST":
+        emailid=request.form.get("emailidhandler")
+        print(emailid)
+        return render_template("admin.html")
+
+    return render_template("handlercollection.html")
+
+
+@app.route('/wholesaler_handler',methods =["GET", "POST"])
+def wholesaler_handler():
+    if request.method == "POST":
+        emailid=request.form.get("emailidhandler")
+        print(emailid)
+        return render_template("admin.html")
+
+    return render_template("handlerreception.html")
+
+@app.route('/wholesaler')
+def wholesaler():
+    return render_template("wholesaler.html")
 
 
 """
