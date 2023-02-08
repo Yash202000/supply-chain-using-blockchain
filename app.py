@@ -1,15 +1,13 @@
-import cv2
-import numpy as np
-from flask import render_template,request,Flask
-import requests,json,xmltodict
-
+from flask import Flask, request, render_template
 import torch.nn as nn
 import torch
 import numpy as np
 from torchvision import transforms
+import cv2
 import base64
 from net import Net
 
+app = Flask(__name__)
 ML_MODEL = None
 ML_MODEL_FILE = "model.pt"
 TORCH_DEVICE = "cpu"
@@ -80,16 +78,36 @@ def recognize_fruit_by_cv_image(cv_image):
     }
 
 
-app = Flask(__name__)
+## Web pages
+
+@app.route("/")
+def index_page():
+    return render_template("index1.html")
+
+@app.route("/purchase", methods=["POST"])
+def purchase_page():
+    return render_template("purchase.html")
+
+@app.route("/checkout", methods=["POST"])
+def checkout_page():
+    cv_image = imdecode_image(request.files["image"])
+    fruit_information = recognize_fruit_by_cv_image(cv_image)
+    # TODO: change freshness_level to freshness_percentage
+    freshness_percentage = fruit_information["freshness_level"]
+
+    # show submitted image
+    image_content = cv2.imencode('.jpg', cv_image)[1].tobytes()
+    encoded_image = base64.encodebytes(image_content)
+    base64_image = 'data:image/jpg;base64, ' + str(encoded_image, 'utf-8')
+    return render_template(
+        "checkout.html",
+        freshness_percentage=freshness_percentage,
+        freshness_label=freshness_label(freshness_percentage),
+        base64_image=base64_image,
+        price=price_to_text(fruit_information["price"])
+    )
 
 
-@app.route('/')
-def home():
-    return render_template("index.html")
-
-
-
-    
 
 @app.route('/login', methods =["GET", "POST"])
 def login():
@@ -157,7 +175,5 @@ def treatment():
 @app.route('/packaging')
 def packaging():
     return render_template("Packaging.html")
-
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True)
