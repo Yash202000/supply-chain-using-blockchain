@@ -47,10 +47,16 @@
     <br>
     <div class="container-contact100">
         <div class="wrap-contact100">
-            <form class="contact100-form validate-form" id="my-form" action="#">
+            <form class="contact100-form validate-form" id="my-form" method="post" enctype="multipart/form-data" action="/collection">
                 <span class="contact100-form-title">
-					Milk Collection Details 
+					Fruit Collection Details 
 				</span>
+
+                <div class="wrap-input100 validate-input" data-validate="Container ID is required">
+                    <span class="label-input100">Container ID</span>
+                    <input class="input100" type="number" name="cid" id="cid" placeholder="Enter Container ID">
+                    <span class="focus-input100"></span>
+                </div>
 
                 <div class="wrap-input100 validate-input" data-validate="ID is required">
                     <span class="label-input100">Farmer ID</span>
@@ -65,16 +71,22 @@
                     <span class="focus-input100"></span>
                 </div>
 
+                <div class="wrap-input100 validate-input" data-validate="Name is required">
+                    <span class="label-input100">Product Name</span>
+                    <input class="input100" type="number" name="pname" id="pname" placeholder="Enter Product Name">
+                    <span class="focus-input100"></span>
+                </div>
+
                 <div class="wrap-input100 validate-input" data-validate="Quantity is required">
-                    <span class="label-input100">Milk Quantity</span>
-                    <input class="input100" type="number" name="quantity" id="quantity" placeholder="Enter Milk Quantity in Ltr">
+                    <span class="label-input100">Product Quantity</span>
+                    <input class="input100" type="number" name="pquantity" id="quantity" placeholder="Enter Milk Quantity in Ltr">
                     <span class="focus-input100"></span>
                 </div>
 
                 <div class="wrap-input100 input100-select">
                     <span class="label-input100">Region</span>
                     <div>
-                        <select class="selection-2" id="region">
+                        <select class="selection-2" id="region" name="region">
 							<option>Pune</option>
 							<option>Nashik</option>
 							<option>Mumbai</option>
@@ -85,34 +97,17 @@
                     <span class="focus-input100"></span>
                 </div>
 
-                <div class="wrap-input100 validate-input" data-validate="Inpurity is required">
-                    <span class="label-input100">Milk Impurity</span>
-                    <input class="input100" type="number" name="impurity" id="impurity" placeholder="Enter Milk Impurity in %">
+                <div class="wrap-input100 validate-input" data-validate="Quantity is required">
+                    <span class="label-input100">Product Image</span>
+                    <input type="file" id="image" name="pimage" class="form-control" accept="image/*" capture required autofocus />
                     <span class="focus-input100"></span>
                 </div>
-
-                <div class="wrap-input100 input100-select">
-                    <span class="label-input100">Milk Type</span>
-                    <div>
-                        <select class="selection-2" id="type">
-							<option>Cow</option>
-							<option>Buffalo</option>							
-						</select>
-                    </div>
-                    <span class="focus-input100"></span>
-                </div>
-
                 <!-- <div class="wrap-input100 validate-input" data-validate="Message is required">
                     <span class="label-input100">Message</span>
                     <textarea class="input100" name="message" placeholder="Your message here..."></textarea>
                     <span class="focus-input100"></span>
                 </div> -->
-                <div class="wrap-input100 validate-input" data-validate="Container ID is required">
-                    <span class="label-input100">Container ID</span>
-                    <input class="input100" type="number" name="cid" id="cid" placeholder="Enter Container ID">
-                    <span class="focus-input100"></span>
-                </div>
-
+                
                 <div class="container-contact100-form-btn">
                     <div class="wrap-contact100-form-btn">
                         <div class="contact100-form-bgbtn"></div>
