@@ -7,7 +7,7 @@ import base64
 
 from werkzeug.utils import secure_filename
 # from operations import create_table, freshness_label, get_image_by_containerid_with_tablename, imdecode_image, price_to_text, read_blob_by_id, read_blobs_from_collectiondetails, recognize_fruit_by_cv_image, write_blob
-from operations import read_blobs_from_collectiondetails ,get_image_by_containerid_with_tablename
+from operations import read_blobs_from_collectiondetails ,get_image_by_containerid_with_tablename, write_blob
 
 
 #  create_table,  get_image_by_containerid_with_tablename,read_blob_by_id,
@@ -36,29 +36,39 @@ app = Flask(__name__)
 
 
 
+
 @app.route("/")
 def home():
     # return render_template('home.html')
     return render_template("index.html")
 
+
+
+@app.route("/freshnessdetection")
+def freshnessdetection():
+    return render_template('home.html')
+
+
+
 @app.route('/Prediction', methods=['GET','POST'])
 def pred():
     if request.method=='POST':
-         file = request.files['file']
-         org_img, img= my_tf_mod.preprocess(file)
+        file = request.files['file']
+        org_img, img= my_tf_mod.preprocess(file)
 
-         print(img.shape)
-         fruit_dict=my_tf_mod.classify_fruit(img)
-         rotten=my_tf_mod.check_rotten(img)
+        print(img.shape)
+        fruit_dict=my_tf_mod.classify_fruit(img)
+        rotten=my_tf_mod.check_rotten(img)
 
-         img_x=BytesIO()
-         plt.imshow(org_img/255.0)
-         plt.savefig(img_x,format='png')
-         plt.close()
-         img_x.seek(0)
-         plot_url=base64.b64encode(img_x.getvalue()).decode('utf8')
+        img_x=BytesIO()
+        plt.imshow(org_img/255.0)
+        plt.savefig(img_x,format='png')
+        plt.close()
+        img_x.seek(0)
+        plot_url=base64.b64encode(img_x.getvalue()).decode('utf8')
 
-
+        # {'apple': 100.0, 'banana': 0.0, 'orange': 0.0}
+        # [98.3, 1.7]
 
     return render_template('Pred3.html', fruit_dict=fruit_dict, rotten=rotten, plot_url=plot_url)
 
@@ -72,25 +82,25 @@ def purchase_page():
 
 
 
-@app.route("/checkout", methods=["POST"])
-def checkout_page():
-    cv_image = imdecode_image(request.files["image"])
-    fruit_information = recognize_fruit_by_cv_image(cv_image)
-    # TODO: change freshness_level to freshness_percentage
-    freshness_percentage = fruit_information["freshness_level"]
+# @app.route("/checkout", methods=["POST"])
+# def checkout_page():
+#     cv_image = imdecode_image(request.files["image"])
+#     fruit_information = recognize_fruit_by_cv_image(cv_image)
+#     # TODO: change freshness_level to freshness_percentage
+#     freshness_percentage = fruit_information["freshness_level"]
 
-    # show submitted image
-    image_content = cv2.imencode('.jpg', cv_image)[1].tobytes()
-    encoded_image = base64.encodebytes(image_content)
-    base64_image = 'data:image/jpg;base64, ' + str(encoded_image, 'utf-8')
+#     # show submitted image
+#     image_content = cv2.imencode('.jpg', cv_image)[1].tobytes()
+#     encoded_image = base64.encodebytes(image_content)
+#     base64_image = 'data:image/jpg;base64, ' + str(encoded_image, 'utf-8')
     
-    return render_template(
-        "checkout.html",
-        freshness_percentage=freshness_percentage,
-        freshness_label=freshness_label(freshness_percentage),
-        base64_image=base64_image,
-        price=price_to_text(fruit_information["price"])
-    )
+#     return render_template(
+#         "checkout.html",
+#         freshness_percentage=freshness_percentage,
+#         freshness_label=freshness_label(freshness_percentage),
+#         base64_image=base64_image,
+#         price=price_to_text(fruit_information["price"])
+#     )
 
 
 
