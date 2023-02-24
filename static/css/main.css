@@ -69,7 +69,7 @@ body {
     font-weight: 300;
     line-height: 1.625em;
     position: relative;
-    background-image: url(../img/menu-bg.jpg);
+    background-image: url(../img/menu.jpg);
 }
 
 ol,
@@ -302,7 +302,7 @@ iframe {
 .login100-form-title {
     font-family: Raleway-Medium;
     font-size: 30px;
-    color: #555555;
+    color: #131313;
     line-height: 1.2;
     text-transform: uppercase;
     text-align: left;
@@ -1808,7 +1808,7 @@ h6 {
 }
 
 .input-group-icon .icon i {
-    color: #797979;
+    color: #a3ff5c;
 }
 
 .input-group-icon .single-input {
@@ -2422,11 +2422,11 @@ h6 {
     right: 0;
     transition: all 0.5s;
     z-index: 997;
-    background: rgba(20, 2, 0, 0.8);
+    background: rgba(176, 213, 199, 0.886);
 }
 
 #header.header-scrolled {
-    background: rgba(20, 2, 0, 0.8);
+    background: rgba(176, 213, 199, 0.886);
     transition: all 0.5s;
 }
 
@@ -2609,7 +2609,7 @@ h6 {
 }
 
 .nav-menu ul li:hover>a {
-    color: #b68834;
+    color: #5dc82b;
 }
 
 .nav-menu ul ul {
@@ -2853,7 +2853,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .banner-area {
-    background: url(../img/header-bg.png) center;
+    background: url(../img/header.jpg) center;
     background-size: cover;
 }
 
@@ -2865,8 +2865,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 @media (max-width: 768px) {
     .banner-area {
-        background: url(../img/header-bg.png);
-        background-position: 50% 90% 50% 50%;
+        background: url(../img/header.jpg);
+        background-position: 50% 80% 50% 50%;
     }
 }
 
@@ -3004,7 +3004,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .single-menu .price {
-    color: #b68834;
+    color: #2e1e02;
     font-size: 18px;
     font-weight: 600;
     display: inline;
@@ -3098,9 +3098,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .footer-area {
     color: rgb(0, 0, 0);
-    padding-top: 50px;
-    background: url(../img/footer-bg.png) center;
+    padding-top: 100px;
+    background: url(../img/footer.jpg) center;
     background-size: cover;
+    opacity: 0.8;
 }
 
 .footer-area h6 {
@@ -3113,14 +3114,16 @@ body.mobile-nav-active #mobile-nav-toggle {
 .copy-right-text i,
 .copy-right-text a {
     color: rgba(20, 2, 0, 0.8);
+    opacity: 1;
 }
 
 .footer-social a {
-    padding-right: 25px;
+    padding-right: 10px;
     -webkit-transition: all 0.3s ease 0s;
     -moz-transition: all 0.3s ease 0s;
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
+    opacity: 1;
 }
 
 .footer-social a:hover i {
@@ -3144,7 +3147,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 .single-footer-widget input {
     border: none;
     width: 80% !important;
-    font-weight: 300;
+    font-weight: 100;
     background: rgba(20, 2, 0, 0.8);
     color: rgb(255, 255, 255);
     padding-left: 20px;
@@ -3317,11 +3320,11 @@ body.mobile-nav-active #mobile-nav-toggle {
     display: inline;
     margin: 20px 45px;
     text-align: center;
-    border: 2px solid #858484;
+    border: 2px solid #232323;
     padding: 14px 10px;
     width: 200px;
     outline: none;
-    color: rgb(80, 79, 79);
+    color: rgb(20, 20, 20);
     border-radius: 24px;
     transition: 0.25s;
 }
@@ -3330,7 +3333,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 .box input[type="number"]:focus {
     width: 280px;
     margin: 20px 5px;
-    border-color: #505050;
+    border-color: #0f0e0e;
 }
 
 .box input[type="submit"],
@@ -3340,18 +3343,18 @@ body.mobile-nav-active #mobile-nav-toggle {
     display: inline;
     margin: 20px 45px;
     text-align: center;
-    border: 2px solid #858484;
+    border: 2px solid #1f1f1f;
     padding: 14px 10px;
     outline: none;
     width: 100px;
-    color: rgb(80, 79, 79);
+    color: rgb(25, 24, 24);
     border-radius: 14px;
     transition: 0.25s;
     cursor: pointer;
 }
 
 .box input[type="submit"]:hover {
-    background: #505050;
+    background: #040404;
     color: rgb(233, 231, 231);
 }
 

@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <link rel="stylesheet" href="static/css/magnific-popup.css">
     <link rel="stylesheet" href="static/css/nice-select.css">
-    <link rel="stylesheet" href="static/css/animate.min.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
     <link rel="stylesheet" href="static/css/owl.carousel.css">
     <link rel="stylesheet" href="static/css/main.css">
     <script>
@@ -52,7 +52,6 @@
                 </div>
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
-                        <li><a href="/freshnessdetection">Check Freshness</a></li>
                         <li class="menu-active"><a href="#home">Home</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#coffee">Our Milk</a></li>
@@ -60,12 +59,12 @@
                         <li class="menu-has-children"><a href="#">Login</a>
                             <ul>
                                 <li>
-                                    <form name="myform" method="POST" action="admin.html">
-                                        <a href="/login">Admin</a></form>
+                                    <form name="myform" method="POST" onclick="getdata('Admin')">
+                                        <a href="#" onclick="javascript:document.myform.submit()">Admin</a></form>
                                 </li>
                                 <li>
-                                    <form name="myform" method="POST" >
-                                        <a href="/login">Employee</a></form>
+                                    <form name="myform" method="POST" onclick="getdata('Employee')">
+                                        <a href="#" onclick="javascript:document.myform.submit()">Employee</a></form>
                                 </li>
                             </ul>
                         </li>
@@ -79,19 +78,32 @@
 
 
     <!-- start banner Area -->
-    <section class="banner-area" id="home">
+    <!--<section class="banner-area" id="home">
         <div class="container">
             <div class="row fullscreen d-flex align-items-center justify-content-start">
                 <div class="banner-content col-lg-7">
-                    <h6 class="text-black text-uppercase">Now you can feel the Energy</h6>
-                    <h1>
-                        BlockChain <br>Trusted Milk
-                    </h1>
-                    <a href="#" class="primary-btn text-uppercase">Buy Now</a>
-                </div>
+                    <h5 class="text-black text-uppercase">Ensuring Freshness with Every Bite: </h5x>
+                        <h1> </h1>
+                        <h2>The Future of Fruit Quality Tracking with Blockchain</h2>
+                    
+                    <a href="#" class="primary-btn text-uppercase">Buy Now</a>-->
+                <!--</div>
             </div>
         </div>
-    </section>
+    </section>-->
+    <section class="banner-area" id="home">
+        <div class="container">
+          <div class="row fullscreen d-flex align-items-center justify-content-start">
+            <div class="banner-content col-lg-7 text-black">
+              <h5 class="text-black text-uppercase mb-4">Ensuring Freshness with Every Bite</h5>
+              <h2 class="mb-4">The Future of Fruit Quality Tracking with Blockchain</h2>
+              <!--<a href="#" class="primary-btn text-uppercase">Buy Now</a>-->
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
     <!-- End banner Area -->
 
     <!-- Start video-sec Area -->
@@ -99,13 +111,14 @@
         <div class="container">
             <div class="row justify-content-start align-items-center">
                 <div class="col-lg-6 video-left">
-                    <h6>Milk making process.</h6>
-                    <h1>We Provide our High Quality Trustworthy Milk</h1>
-                    <p><span>We are here to listen from you deliver exellence</span></p>
+                    <h6>Fruit Quality Assurance</h6>
+                    <h1>Traceability System Empowered by Blockchain</h1>
+                    <p><span>The Future of Fruit Quality Tracking with Blockchain</span></p>
                 </div>
             </div>
         </div>
     </section>
+      
     <!-- End video-sec Area -->
 
     <!-- Start menu Area -->
@@ -114,8 +127,9 @@
             <div class="row d-flex justify-content-center">
                 <div class="menu-content pb-60 col-lg-10">
                     <div class="title text-center">
-                        <h1 class="mb-10">What kind of Milk we serve for you</h1>
-                        <p>Who are in extremely love with eco friendly system.</p>
+                        <h1 class="mb-10">We Ensure the Quality of YOUR FRUITS </h1>
+                        <p>We are in extremely love with eco friendly system.</p>
+                        <h3>OUR STAKEHOLDERS</h3>
                     </div>
                 </div>
             </div>
@@ -123,7 +137,7 @@
                 <div class="col-lg-4">
                     <div class="single-menu">
                         <div class="title-div justify-content-between d-flex">
-                            <h4>BTM Deshi Cow Milk</h4>
+                            <h4>Farmers</h4>
                             <p class="price float-right">
                                 Rs.28/-<br>(500ml)
                             </p>
@@ -137,7 +151,7 @@
                 <div class="col-lg-4">
                     <div class="single-menu">
                         <div class="title-div justify-content-between d-flex">
-                            <h4>BTM Cow Milk</h4>
+                            <h4>Wholesalers</h4>
                             <p class="price float-right">
                                 Rs.22/-<br>(500ml)
                             </p>
@@ -151,7 +165,7 @@
                 <div class="col-lg-4">
                     <div class="single-menu">
                         <div class="title-div justify-content-between d-flex">
-                            <h4>BTM Gold Milk</h4>
+                            <h4>Retailers</h4>
                             <p class="price float-right">
                                 Rs.32/-<br>(500ml)
                             </p>
@@ -173,6 +187,7 @@
                 <div class="menu-content pb-60 col-lg-10">
                     <div class="title text-center">
                         <h1 class="mb-10" style="color: black;">Talk To Us</p>
+                        <style></style>
                     </div>
                 </div>
             </div>
