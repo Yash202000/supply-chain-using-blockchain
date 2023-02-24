@@ -10,9 +10,12 @@ clf_model=load_model('local_fruit_final.h5')
 
 # reads frfom file object
 # return array of original uploaded image and 1x100x100x3 processed image
-def preprocess(file):
+def preprocess(file,data):
     ImageFile.LOAD_TRUNCATED_IMAGES =False
-    org_img=Image.open(BytesIO(file.read()))
+    # org_img=Image.open(BytesIO(file.read()))
+    org_img=Image.open(data)
+    
+    
     org_img.load()
     img=org_img.resize((100,100), Image.ANTIALIAS)
 

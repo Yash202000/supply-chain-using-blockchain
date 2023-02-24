@@ -7,7 +7,7 @@ import base64
 
 from werkzeug.utils import secure_filename
 # from operations import create_table, freshness_label, get_image_by_containerid_with_tablename, imdecode_image, price_to_text, read_blob_by_id, read_blobs_from_collectiondetails, recognize_fruit_by_cv_image, write_blob
-from operations import read_blobs_from_collectiondetails ,get_image_by_containerid_with_tablename, write_blob
+from operations import create_table, read_blobs_from_collectiondetails ,get_image_by_containerid_with_tablename, write_blob
 
 
 #  create_table,  get_image_by_containerid_with_tablename,read_blob_by_id,
@@ -31,7 +31,7 @@ import base64
 app = Flask(__name__)
 
 
-# create_table()
+create_table()
 
 
 
@@ -54,7 +54,10 @@ def freshnessdetection():
 def pred():
     if request.method=='POST':
         file = request.files['file']
-        org_img, img= my_tf_mod.preprocess(file)
+
+        bufdata = file.read()
+        imgbytedata = BytesIO(bufdata)
+        org_img, img= my_tf_mod.preprocess(file,imgbytedata)
 
         print(img.shape)
         fruit_dict=my_tf_mod.classify_fruit(img)
@@ -82,29 +85,6 @@ def purchase_page():
 
 
 
-# @app.route("/checkout", methods=["POST"])
-# def checkout_page():
-#     cv_image = imdecode_image(request.files["image"])
-#     fruit_information = recognize_fruit_by_cv_image(cv_image)
-#     # TODO: change freshness_level to freshness_percentage
-#     freshness_percentage = fruit_information["freshness_level"]
-
-#     # show submitted image
-#     image_content = cv2.imencode('.jpg', cv_image)[1].tobytes()
-#     encoded_image = base64.encodebytes(image_content)
-#     base64_image = 'data:image/jpg;base64, ' + str(encoded_image, 'utf-8')
-    
-#     return render_template(
-#         "checkout.html",
-#         freshness_percentage=freshness_percentage,
-#         freshness_label=freshness_label(freshness_percentage),
-#         base64_image=base64_image,
-#         price=price_to_text(fruit_information["price"])
-#     )
-
-
-
-
 @app.route('/login', methods =["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -128,37 +108,37 @@ def collection():
         productname = request.form.get("pname")
         productquantity = request.form.get("pquantity")
         region = request.form.get("region")
-        # cv_image = imdecode_image(request.files["pimage"])
-        # print(type(cv_image))
-        f = request.files['pimage']
-        f.save(secure_filename("download.jpg"))
+        file = request.files['pimage']
         
-        # with open("download.jpg","rb") as f:
-        #     byte_data = f.read()
-        #     print(str(byte_data))
-            
+        
+        bufdata = file.read()
+        imgbytedata = BytesIO(bufdata)
+        
+        org_img, img= my_tf_mod.preprocess(file,imgbytedata)
+        print(img.shape)
+        fruit_dict=my_tf_mod.classify_fruit(img)
+        rotten=my_tf_mod.check_rotten(img)
 
+        img_x=BytesIO()
+        plt.imshow(org_img/255.0)
+        plt.savefig(img_x,format='png')
+        plt.close()
+        img_x.seek(0)
+        plot_url=base64.b64encode(img_x.getvalue()).decode('utf8')
 
-        cv_image = cv2.imread("download.jpg")
-        
-
-        fruit_information = recognize_fruit_by_cv_image(cv_image)
-        
-        freshness_percentage = fruit_information["freshness_level"]
-        image_content = cv2.imencode('.jpg', cv_image)[1].tobytes()
-        encoded_image = base64.encodebytes(image_content)
-        base64_image = 'data:image/jpg;base64, ' + str(encoded_image, 'utf-8')
-        
-        with open("download.jpg","rb") as f:
-            byte_data = f.read()
-        
-        # store data in database (if not exist container id..)
-        result = write_blob(containerid, farmerid,farmername, productname, productquantity,region,byte_data,freshness_percentage)
-        os.remove("download.jpg")
+        # {'apple': 100.0, 'banana': 0.0, 'orange': 0.0}
+        # [98.3, 1.7]
+        # containerID INTEGER, farmerid INTEGER, farmername TEXT,productname TEXT, quantity INTEGER, region TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4
+        result = write_blob(containerid, farmerid,farmername, productname, productquantity,region,bufdata,rotten[0],rotten[1],fruit_dict['apple'],fruit_dict['banana'],fruit_dict['orange'])
         if result:
             return redirect(url_for( 'collectiontable' ))
         else:
-            return render_template("Collection.html")    
+            return render_template("Collection.html")
+        
+        
+        return render_template('Pred3.html', fruit_dict=fruit_dict, rotten=rotten, plot_url=plot_url)
+
+   
     return render_template("Collection.html")
 
 

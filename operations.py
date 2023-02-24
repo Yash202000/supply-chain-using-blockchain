@@ -40,7 +40,7 @@ def create_table():
         try:
             # Fire the CREATE query
             curr.execute("CREATE TABLE IF NOT EXISTS \
-            collectiondetails(containerID INTEGER, farmerid INTEGER, farmername TEXT,productname TEXT, quantity INTEGER, region TEXT, productImg BYTEA, freshness float4)")
+            collectiondetails(containerID INTEGER, farmerid INTEGER, farmername TEXT,productname TEXT, quantity INTEGER, region TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4);")
               
         except(Exception, psycopg2.Error) as error:
             # Print exception
@@ -56,7 +56,7 @@ def create_table():
 
 
 
-def write_blob(containerid, farmerid,farmername, productname, productquantity,region,byte_data,freshness):
+def write_blob(containerid, farmerid,farmername, productname, productquantity,region,byte_data,fresh ,rotten ,apple ,banana,orange):
 
     # Get the cursor object from the connection object
 
@@ -69,8 +69,9 @@ def write_blob(containerid, farmerid,farmername, productname, productquantity,re
         if res:
             return False
 
+        
         curr.execute(f"INSERT INTO collectiondetails\
-        (containerID,farmerid,farmername,productname,quantity , region , productImg,freshness )" +f" VALUES( {containerid}, {farmerid},' {farmername}', '{productname}', {productquantity},'{region}', {psycopg2.Binary(byte_data)}, {freshness} );")
+        (containerID,farmerid,farmername,productname,quantity , region , productImg,fresh ,rotten ,apple ,banana,orange )" +f" VALUES( {containerid}, {farmerid},' {farmername}', '{productname}', {productquantity},'{region}', {psycopg2.Binary(byte_data)}, {fresh},{rotten},{apple},{banana},{orange} );")
         
         # Close the connection object
         conn.commit()
@@ -109,7 +110,7 @@ def read_blobs_from_collectiondetails():
 
         # Read data from a image file
         conn, curr = create_connection()
-        curr.execute(f"select  containerid, farmerid , farmername , productname , quantity , region, freshness  from collectiondetails;")
+        curr.execute(f"select  containerid, farmerid , farmername , productname , quantity , region, fresh  from collectiondetails;")
         results = curr.fetchall()
         
         return results

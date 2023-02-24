@@ -3,7 +3,7 @@ import psycopg2
 
 
 def create_connection():
-    conn = psycopg2.connect(dbname='cascade',
+    conn = psycopg2.connect(dbname='collegeproject',
                             user='postgres',
                             password='password',
                             host='localhost',
