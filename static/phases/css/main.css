@@ -35,7 +35,7 @@ body,
 html {
     height: 100%;
     font-family: sans-serif;
-    background-image: url(../images/menu-bg.jpg);
+    background-image: url(../images/white.jpg);
 }
 
 
@@ -218,11 +218,11 @@ popup*/
     right: 0;
     transition: all 0.5s;
     z-index: 997;
-    background: rgba(20, 2, 0, 0.8);
+    background: rgba(176, 213, 199, 0.886);
 }
 
 #header.header-scrolled {
-    background: rgba(20, 2, 0, 0.8);
+    background: rgba(176, 213, 199, 0.886);
     transition: all 0.5s;
 }
 
@@ -426,8 +426,8 @@ popup*/
     border-radius: 10px;
     overflow: hidden;
     padding: 42px 55px 45px 55px;
-    border: 3px solid rgba(20, 2, 0, 0.8);
-    box-shadow: 0px 10px 30px 0px rgba(182, 136, 52, 0.2);
+    border: 3px solid rgba(176, 213, 199, 0.886);
+    box-shadow: 0px 10px 30px 0px rgba(176, 213, 199, 0.886);
 }
 
 
@@ -555,11 +555,11 @@ textarea.input100 {
     z-index: -1;
     width: 300%;
     height: 100%;
-    background: rgba(20, 2, 0, 0.61);
-    background: -webkit-linear-gradient(left, rgba(20, 2, 0, 0.267), rgb(20, 2, 0), rgba(20, 2, 0, 0.267), rgb(20, 2, 0));
-    background: -o-linear-gradient(left, rgba(20, 2, 0, 0.267), rgb(20, 2, 0), rgba(20, 2, 0, 0.267), rgb(20, 2, 0));
-    background: -moz-linear-gradient(left, rgba(20, 2, 0, 0.267), rgb(20, 2, 0), rgba(20, 2, 0, 0.267), rgb(20, 2, 0));
-    background: linear-gradient(left, rgba(20, 2, 0, 0.267), rgb(20, 2, 0), rgba(20, 2, 0, 0.267), rgb(20, 2, 0));
+    background: rgba(176, 213, 199, 0.886);
+    background: -webkit-linear-gradient(left, rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199));
+    background: -o-linear-gradient(left, rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199));
+    background: -moz-linear-gradient(left, rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199));
+    background: linear-gradient(left, rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199, 0.886), rgba(176, 213, 199));
     top: 0;
     left: -100%;
     -webkit-transition: all 0.4s;
@@ -782,12 +782,12 @@ textarea.input100 {
 }
 
 .select2-container .select2-results__option[aria-selected="true"] {
-    background: rgba(20, 2, 0, 0.726);
+    background: rgba(176, 213, 199, 0.886);
     color: white;
 }
 
 .select2-container .select2-results__option--highlighted[aria-selected] {
-    background: rgba(20, 2, 0, 0.726);
+    background: rgba(176, 213, 199, 0.886);
     color: white;
 }
 
@@ -856,7 +856,7 @@ table th {
 
 table thead tr {
     height: 60px;
-    background: rgba(20, 2, 0, 0.8);
+    background: rgba(176, 213, 199, 0.886);
 }
 
 table tbody tr {
@@ -890,7 +890,7 @@ table th.r {
 .table100-head th {
     font-family: OpenSans-Regular;
     font-size: 18px;
-    color: #fff;
+    color: #000000;
     line-height: 1.2;
     font-weight: unset;
 }
