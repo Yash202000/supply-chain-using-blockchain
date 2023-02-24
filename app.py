@@ -192,7 +192,7 @@ watch this..
 """
 
 
-@app.route('/treatment')
+@app.route('/retailer')
 def treatment():
     return render_template("Treatment.html")
 
@@ -200,7 +200,7 @@ def treatment():
 
 
 
-@app.route('/packaging')
+@app.route('/customer')
 def packaging():
     return render_template("Packaging.html")
 

@@ -36,7 +36,7 @@
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
                         <li class="menu-active home"><a href="index.html">Home</a></li>
-                        <li class="menu-active"><a href="TreatmentTable.html">Transactions</a></li>
+                        <li class="menu-active"><a href="ReceptionTable.html">Transactions</a></li>
                         <li class="menu-active"><a href="productlist.html">Products</a></li>
                         <li class="menu-active logout"><a href="#">Logout</a></li>
                     </ul>
@@ -49,8 +49,8 @@
         <div class="wrap-contact100">
             <form class="contact100-form validate-form" id="my-form" action="#">
                 <span class="contact100-form-title">
-                    Milk Treatment Details 
-                </span>
+					Fruit Retailer Details 
+				</span>
 
                 <div class="wrap-input100 validate-input" data-validate="Container ID is required">
                     <span class="label-input100">Container ID</span>
@@ -59,44 +59,38 @@
                 </div>
 
 
-                <div class="wrap-input100 validate-input" data-validate="Tempreture value required">
-                    <span class="label-input100">Tempreture Value in degree</span>
-                    <input class="input100" type="text" name="tempvalue" id="tempvalue" placeholder="Enter Tempreture Value">
+                <div class="wrap-input100 validate-input" data-validate="Somatic count is required">
+                    <span class="label-input100">Retailer ID</span>
+                    <input class="input100" type="number" step="1" name="rid" id="somaticcount" placeholder="Retailer ID">
                     <span class="focus-input100"></span>
                 </div>
 
-                <div class="wrap-input100 validate-input" data-validate="Shelflife is required">
-                    <span class="label-input100">Milk Shelflife</span>
-                    <input class="input100" type="number" name="shelflife" id="shelflife" placeholder="Enter Milk ShelfLife in days">
+                <div class="wrap-input100 validate-input" data-validate="Protein content is required">
+                    <span class="label-input100">Retailer Name</span>
+                    <input class="input100" type="text" name="rname" placeholder="Retailer Name">
                     <span class="focus-input100"></span>
                 </div>
 
-                <div class="wrap-input100 input100-select" data-validate="Method is required">
-                    <span class="label-input100">Pasteurization Method</span>
-                    <div>
-                        <select class="selection-2" name="method" id="method">
-                            
-                            <option>Batch Method</option>
-                            <option>Continous Method</option>
-                            <option>HTST Method</option>
-                            <option>UHT Method</option>
-                            
-                        </select>
-                    </div>
+                <div class="wrap-input100 validate-input" data-validate="Fat Content is required">
+                    <span class="label-input100">Quantity</span>
+                    <input class="input100" type="number" name="rquantity" step="1" placeholder="Quantity">
                     <span class="focus-input100"></span>
                 </div>
 
-                <div class="wrap-input100 validate-input" data-validate="D-value is required">
-                    <span class="label-input100">Heat Resistence</span>
-                    <input class="input100" type="number" name="dvalue" id="dvalue" placeholder="Enter Heat Resistence(D-value)">
+                <div class="wrap-input100 validate-input" data-validate="Freezing point is required">
+                    <span class="label-input100">Date of Collection</span>
+                    <input class="input100" type="date" name="collectiondate" id="fp" step="0.1" placeholder="Enter Date">
                     <span class="focus-input100"></span>
                 </div>
 
-
-
-                <div class="wrap-input100 validate-input" data-validate="Reynold value required">
-                    <span class="label-input100">Reynold number</span>
-                    <input class="input100" type="text" name="renoyld" id="renoyld" placeholder="Enter Reynold Value">
+                <div class="wrap-input100 validate-input" data-validate="PH value required">
+                    <span class="label-input100">Date of Shipping</span>
+                    <input class="input100" type="date" name="shippingdate" id="ph" step="0.1" placeholder="Enter Shipping Date">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Quantity is required">
+                    <span class="label-input100">Product Image</span>
+                    <input type="file" id="image" name="pimage" class="form-control" accept="image/*" capture required autofocus />
                     <span class="focus-input100"></span>
                 </div>
                 <!-- <div class="wrap-input100 validate-input" data-validate="Message is required">
@@ -162,7 +156,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
     <script src="static/phases/js/firebase.js"></script>
-    <script src="static/phases/js/Treatment.js"></script>
+    <script src="static/phases/js/Reception.js"></script>
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
