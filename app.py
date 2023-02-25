@@ -136,7 +136,7 @@ def collection():
             return render_template("Collection.html")
         
         
-        return render_template('Pred3.html', fruit_dict=fruit_dict, rotten=rotten, plot_url=plot_url)
+        #return render_template('Pred3.html', fruit_dict=fruit_dict, rotten=rotten, plot_url=plot_url)
 
    
     return render_template("Collection.html")

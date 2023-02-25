@@ -41,7 +41,11 @@ def create_table():
             # Fire the CREATE query
             curr.execute("CREATE TABLE IF NOT EXISTS \
             collectiondetails(containerID INTEGER, farmerid INTEGER, farmername TEXT,productname TEXT, quantity INTEGER, region TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4);")
-              
+
+            c#urr.execute("CREATE TABLE IF NOT EXISTS \
+            #collectionhandlers(handlerID SERIAL PRIMARY KEY , name TEXT, farmername TEXT,productname TEXT, quantity INTEGER, region TEXT);")
+
+
         except(Exception, psycopg2.Error) as error:
             # Print exception
             print("Error while creating cartoon table", error)
