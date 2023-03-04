@@ -36,7 +36,7 @@
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
                         <li class="menu-active home"><a href="index.html">Home</a></li>
-                        <li class="menu-active"><a href="PackagingTable.html">Transactions</a></li>
+                        <li class="menu-active"><a href="ReceptionTable.html">Transactions</a></li>
                         <li class="menu-active"><a href="productlist.html">Products</a></li>
                         <li class="menu-active logout"><a href="#">Logout</a></li>
                     </ul>
@@ -45,7 +45,89 @@
         </div>
     </header>
     <br>
-    
+    <div class="container-contact100">
+        <div class="wrap-contact100">
+            <form class="contact100-form validate-form" id="my-form" method="post" enctype="multipart/form-data" action="/retailer">
+                <span class="contact100-form-title">
+					Fruit Retailers Details 
+				</span>
+
+                <div class="wrap-input100 validate-input" data-validate="Container ID is required">
+                    <span class="label-input100">Container ID</span>
+                    <input class="input100" type="text" name="cid" id="cid" placeholder="Enter Container Id">
+                    <span class="focus-input100"></span>
+                </div>
+
+
+                <div class="wrap-input100 validate-input" data-validate="Somatic count is required">
+                    <span class="label-input100">Retailer ID</span>
+                    <input class="input100" type="number" step="1" name="wid" id="somaticcount" placeholder="Retailer ID">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Protein content is required">
+                    <span class="label-input100">Retailer Name</span>
+                    <input class="input100" type="text" name="wname" step="0.1" id="protein" placeholder="Retailer Name">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Fat Content is required">
+                    <span class="label-input100">Quantity</span>
+                    <input class="input100" type="number" name="wquantity" id="fat" step="0.1" placeholder="Quantity">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Freezing point is required">
+                    <span class="label-input100">Date of Collection</span>
+                    <input class="input100" type="date" name="collectiondate" id="fp" step="0.1" placeholder="Enter Date">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="PH value required">
+                    <span class="label-input100">Date of Shipping</span>
+                    <input class="input100" type="date" name="shippingdate" id="ph" step="0.1" placeholder="Enter Shipping Date">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Quantity is required">
+                    <span class="label-input100">Product Image</span>
+                    <input type="file" id="image" name="pimage" class="form-control" accept="image/*" capture required autofocus />
+                    <span class="focus-input100"></span>
+                </div>
+                <!-- <div class="wrap-input100 validate-input" data-validate="Message is required">
+                    <span class="label-input100">Message</span>
+                    <textarea class="input100" name="message" placeholder="Your message here..."></textarea>
+                    <span class="focus-input100"></span>
+                </div> -->
+
+                <div class="container-contact100-form-btn">
+                    <div class="wrap-contact100-form-btn">
+                        <div class="contact100-form-bgbtn"></div>
+                        <button class="contact100-form-btn" id="reset-btn" onclick="resetForm()">
+							<span >
+								Reset
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+                    </div>
+                </div>
+
+                <div class="container-contact100-form-btn">
+                    <div class="wrap-contact100-form-btn">
+                        <div class="contact100-form-bgbtn"></div>
+                        <button class="contact100-form-btn" onclick="addToFirebase()">
+							<span>
+								Submit
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+                    </div>
+                </div>
+                <input type="submit" id="submit-button" hidden>
+            </form>
+        </div>
+    </div>
+
+
 
     <div id="dropDownSelect1"></div>
 
@@ -74,7 +156,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
     <script src="static/phases/js/firebase.js"></script>
-    <script src="static/phases/js/Packaging.js"></script>
+    <script src="static/phases/js/Reception.js"></script>
 
 
     <!-- Global site tag (gtag.js) - Google Analytics -->

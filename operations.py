@@ -30,6 +30,9 @@ def create_table():
             curr.execute("CREATE TABLE IF NOT EXISTS \
                         wholesalerdetails(containerID INTEGER, wholesalerId INTEGER, name TEXT, quantity INTEGER, collectionDate TEXT, shippingDate TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4)")
             
+            curr.execute("CREATE TABLE IF NOT EXISTS \
+                        retailerdetails(containerID INTEGER, retailerId INTEGER, name TEXT, quantity INTEGER, collectionDate TEXT, shippingDate TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4)")
+            
             
             curr.execute("CREATE TABLE IF NOT EXISTS \
                         collectionhandlers(ID SERIAL PRIMARY KEY , name TEXT, email TEXT UNIQUE ,region TEXT);")
@@ -107,8 +110,29 @@ def write_blob(data=None,tablename = None):
         except(Exception, psycopg2.Error) as error:
             # Print exception
             print("Error while creating cartoon table", error)
+    
+    elif tablename=='retailerdetails':
+        try:
 
-    elif tablename=="collectionhandlers" or tablename=='wholesalehandlers':
+            curr.execute(f"select containerid from wholesalerdetails where containerid={data['containerID']};")
+            res = curr.fetchone()
+            if res:
+               
+                curr.execute(f"INSERT INTO {tablename}\
+                (containerID, retailerId, name, quantity, collectionDate, shippingDate, productImg, fresh, rotten, apple, banana, orange )" +f" VALUES( {data['containerID']}, {data['retailerId']},' {data['wholesalerName']}', '{data['productQuantity']}', '{data['collectionDate']}','{data['shippingDate']}', {psycopg2.Binary(data['productImg'])}, {data['fresh']},{data['rotten']},{data['apple']},{data['banana']},{data['orange']} );")
+                
+                # Close the connection object
+                conn.commit()
+                conn.close()
+                return True
+            return False
+
+        except(Exception, psycopg2.Error) as error:
+            # Print exception
+            print("Error while creating cartoon table", error)
+    
+
+    elif tablename=="collectionhandlers" or tablename=='wholesalehandlers' or tablename=='retailhandlers':
 
         try:
 
@@ -153,14 +177,24 @@ def read_blob_by_id(id,tablename):
         
 
 
-def read_blobs_from_collectiondetails():
+def read_blobs(tablename=None):
+    if tablename==None:
+        return False
+    
     try:
-        # Get the cursor object from the connection object
-
         # Read data from a image file
         conn, curr = create_connection()
-        curr.execute(f"select  containerid, farmerid , farmername , productname , quantity , region, fresh  from collectiondetails;")
-        results = curr.fetchall()
+        if tablename=="collectiondetails":
+
+            curr.execute(f"select  containerid, farmerid , farmername , productname , quantity , region, fresh  from collectiondetails;")
+            results = curr.fetchall()
+        elif tablename=="wholesalerdetails":
+            curr.execute(f"select containerID, wholesalerId, name, quantity, collectionDate, shippingDate,  fresh  from wholesalerdetails;")
+            results = curr.fetchall()
+        
+        elif tablename=="retailerdetails":
+            curr.execute(f"select containerID, retailerId, name, quantity, collectionDate, shippingDate,  fresh  from retailerdetails;")
+            results = curr.fetchall()
         
         return results
     except(Exception, psycopg2.Error) as error:

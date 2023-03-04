@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Table V01</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="static/phases/css/util.css">
+    <link rel="stylesheet" type="text/css" href="static/phases/css/main.css">
+    <!--===============================================================================================-->
+</head>
+<script>
+
+    //  get request for collectiontable;
+    const url = 'http://localhost:5000';
+    let names;
+    var filelocation = url+'/getalldir/';
+    var downloadfileLocationarr = [];
+
+    async function getCollectionDetails(){
+      var response = await fetch(url+'/getcustomers');
+      var names = await response.json();
+      document.getElementById("customer").innerHTML += '<option value="' + '...' + '">' + 'Select Customer' + '</option>';
+      for (i = 0; i < names.length; i++) {
+        var opt = document.createElement("option");
+        document.getElementById("customer").innerHTML += '<option value="' + names[i] + '">' + names[i] + '</option>';
+      }
+    }
+
+
+</script>
+<body>
+    <header id="header" id="home">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div id="logo">
+                    <a href="#"><img src="static/static/phases/images/logo.png" alt="" title="" /></a>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li class="menu-active home"><a href="index.html">Home</a></li>
+                        <li class="menu-active"><a href="Collection.html">Form</a></li>
+                        <li class="menu-active"><a href="productlist.html">Products</a></li>
+                        <li class="menu-active logout"><a href="#">Logout</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                <div class="table100">
+                    <table id="milkCollection">
+                        <thead>
+                            <tr class="table100-head">
+                                <th class="column1">ContainerID</th>
+                                <th class="column2">wholesalerID </th>
+                                <th class="column3">name</th>
+                                <th class="column5">Quantity</th>
+                                <th class="column6">collectionDate</th>
+                                <th class="column7">shippingDate</th>
+                                <th class="column7">Fresh</th>
+                                <th class="column8">Link</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            {% for result in results %}
+                                <tr>
+                                    <td>{{result[0]}}</td>
+                                    <td>{{result[1]}}</td>
+                                    <td>{{result[2]}}</td>
+                                    <td>{{result[3]}}</td>
+                                    <td>{{result[4]}}</td>
+                                    <td>{{result[5]}}</td>
+                                    <td>{{result[6]}}</td>
+                                    <!-- <td>{{result[7]}}</td> -->
+                                    <td><a href="http://localhost:5000/send_image?tablename=collectiondetails&containerid={{result[0]}}">Image</a></td>        
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--===============================================================================================-->
+    <script src="static/phases/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="static/phases/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="static/phases/vendor/bootstrap/js/popper.js"></script>
+    <script src="static/phases/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="static/phases/vendor/select2/select2.min.js"></script>
+    <script>
+        $(".selection-2").select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $('#dropDownSelect1')
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script src="static/phases/vendor/daterangepicker/moment.min.js"></script>
+    <script src="static/phases/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="static/phases/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+    <script src="static/phases/js/firebase.js"></script>
+    <script src="static/phases/js/Collection.js"></script>
+</body>
+
+</html>

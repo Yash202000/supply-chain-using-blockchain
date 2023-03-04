@@ -4,7 +4,7 @@ import base64
 
 
 
-from operations import create_table, read_blobs_from_collectiondetails ,get_image_by_containerid_with_tablename, write_blob
+from operations import create_table, read_blobs ,get_image_by_containerid_with_tablename, write_blob
 
 
 import my_tf_mod
@@ -142,7 +142,7 @@ def collection():
 @app.route("/collectiontable",methods=['GET'])
 def collectiontable():
     if request.method=="GET":
-        results = read_blobs_from_collectiondetails()
+        results = read_blobs(tablename='collectiondetails')
         print(results)
         
         return render_template("CollectionTable.html",results=results)
@@ -164,7 +164,7 @@ def collection_handler():
         if result:
             return redirect(url_for( 'collectiontable' ))
         else:
-            return render_template("Collection.html")
+            return render_template("admin.html")
         
 
     return render_template("handlercollection.html")
@@ -190,7 +190,7 @@ def wholesaler_handler():
         if result:
             return redirect(url_for( 'collectiontable' ))
         else:
-            return render_template("Collection.html")
+            return render_template("admin.html")
         
 
     return render_template("handlerwholesaler.html")
@@ -236,7 +236,7 @@ def wholesaler():
             },
             tablename="wholesalerdetails")
         if result:
-            return redirect(url_for( 'collectiontable' ))
+            return redirect(url_for( 'wholesaletable' ))
         else:
             return render_template("Collection.html")
         
@@ -250,6 +250,13 @@ def wholesaler():
         
     return render_template("wholesaler.html")
 
+@app.route("/wholesaletable",methods=['GET'])
+def wholesaletable():
+    if request.method=="GET":
+        results = read_blobs(tablename='wholesalerdetails')
+        
+        return render_template("WholesaleTable.html",results=results)
+    
 
 """
 https://youtube.com/watch?v=08S5Br_iED8&si=EnSIkaIECMiOmarE
@@ -258,9 +265,48 @@ watch this..
 """
 
 
-@app.route('/retailer')
-def treatment():
-    return render_template("Treatment.html")
+@app.route('/retailer',methods=['GET','POST'])
+def retailer():
+    if request.method=="POST":
+        containerId = request.form.get("cid")
+        wholesalerId = request.form.get("wid")
+        wholesalerName = request.form.get("wname")
+        productQuantity = request.form.get("wquantity")
+        collectionDate = request.form.get("collectiondate")
+        shippingDate = request.form.get("shippingdate")
+        file = request.files['pimage']
+
+        bufdata = file.read()
+        imgbytedata = BytesIO(bufdata)
+        
+        org_img, img= my_tf_mod.preprocess(file,imgbytedata)
+        print(img.shape)
+        fruit_dict=my_tf_mod.classify_fruit(img)
+        rotten=my_tf_mod.check_rotten(img)
+
+        result = write_blob(
+            data={
+            "containerID": containerId,
+            "retailerId":wholesalerId,
+            "wholesalerName": wholesalerName,
+            "productQuantity": productQuantity,
+            "collectionDate": collectionDate,
+            "shippingDate": shippingDate,
+            "productImg": bufdata,
+            "fresh":  rotten[0],
+            "rotten": rotten[1],
+            "apple": fruit_dict['apple'],
+            "banana": fruit_dict['banana'],
+            "orange": fruit_dict['orange']
+            },
+            tablename="retailerdetails")
+        if result:
+            return redirect(url_for( 'retailtable' ))
+        else:
+            return render_template("Retailer.html")
+        
+
+    return render_template("Retailer.html")
 
 
 
@@ -279,19 +325,26 @@ def retail_handler():
         },tablename = "retailhandlers")
         
         if result:
-            return redirect(url_for( 'collectiontable' ))
+            return redirect(url_for( 'retailtable' ))
         else:
-            return render_template("Collection.html")
+            return render_template("admin.html")
         
 
     return render_template("handlerretailer.html")
 
 
+@app.route("/retailtable",methods=['GET'])
+def retailtable():
+    if request.method=="GET":
+        results = read_blobs(tablename='retailerdetails')
+        print(results)
+        
+        return render_template("CollectionTable.html",results=results)
 
 
 @app.route('/customer')
 def packaging():
-    return render_template("Packaging.html")
+    return render_template("Customers.html")
 
 
 # http://localhost:5000/send_image?tablename=collectiondetails&containerid=1
