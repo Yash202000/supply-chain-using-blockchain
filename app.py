@@ -1,26 +1,12 @@
-import os
+from datetime import datetime
 from flask import Flask, redirect, request, render_template, send_file, url_for
-import cv2
 import base64
 
 
 
-from werkzeug.utils import secure_filename
-# from operations import create_table, freshness_label, get_image_by_containerid_with_tablename, imdecode_image, price_to_text, read_blob_by_id, read_blobs_from_collectiondetails, recognize_fruit_by_cv_image, write_blob
 from operations import create_table, read_blobs_from_collectiondetails ,get_image_by_containerid_with_tablename, write_blob
 
 
-#  create_table,  get_image_by_containerid_with_tablename,read_blob_by_id,
-
-import os
-import sys
-import numpy as np
-from flask import Flask, render_template, request
-from werkzeug.utils import secure_filename
-
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import load_model
-from PIL import Image, ImageFile
 import my_tf_mod
 from io import BytesIO
 import matplotlib.pyplot as plt
@@ -29,6 +15,7 @@ import base64
 
 
 app = Flask(__name__)
+
 
 
 create_table()
@@ -119,17 +106,24 @@ def collection():
         fruit_dict=my_tf_mod.classify_fruit(img)
         rotten=my_tf_mod.check_rotten(img)
 
-        img_x=BytesIO()
-        plt.imshow(org_img/255.0)
-        plt.savefig(img_x,format='png')
-        plt.close()
-        img_x.seek(0)
-        plot_url=base64.b64encode(img_x.getvalue()).decode('utf8')
-
         # {'apple': 100.0, 'banana': 0.0, 'orange': 0.0}
         # [98.3, 1.7]
-        # containerID INTEGER, farmerid INTEGER, farmername TEXT,productname TEXT, quantity INTEGER, region TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4
-        result = write_blob(containerid, farmerid,farmername, productname, productquantity,region,bufdata,rotten[0],rotten[1],fruit_dict['apple'],fruit_dict['banana'],fruit_dict['orange'])
+        result = write_blob(
+            data={
+            "containerID": containerid,
+            "farmerid":farmerid,
+            "farmername": farmername,
+            "productname": productname,
+            "quantity": productquantity,
+            "region": region,
+            "productImg": bufdata,
+            "fresh":  rotten[0],
+            "rotten": rotten[1],
+            "apple": fruit_dict['apple'],
+            "banana": fruit_dict['banana'],
+            "orange": fruit_dict['orange']
+            }
+            ,tablename = "collectiondetails")
         if result:
             return redirect(url_for( 'collectiontable' ))
         else:
@@ -157,9 +151,21 @@ def collectiontable():
 @app.route('/collection_handler',methods =["GET", "POST"])
 def collection_handler():
     if request.method == "POST":
-        emailid=request.form.get("emailidhandler")
-        print(emailid)
-        return render_template("admin.html")
+        emailid=request.form.get("cemail")
+        cname = request.form.get("cname")
+        region = request.form.get("region")
+        
+        result = write_blob(data={
+            "name": cname,
+            "email": emailid,
+            "region": region
+        },tablename = "collectionhandlers")
+        
+        if result:
+            return redirect(url_for( 'collectiontable' ))
+        else:
+            return render_template("Collection.html")
+        
 
     return render_template("handlercollection.html")
 
@@ -168,20 +174,80 @@ def collection_handler():
 
 
 
-@app.route('/wholesaler_handler',methods =["GET", "POST"])
+@app.route('/wholesale_handler',methods =["GET", "POST"])
 def wholesaler_handler():
     if request.method == "POST":
-        emailid=request.form.get("emailidhandler")
-        print(emailid)
-        return render_template("admin.html")
+        emailid=request.form.get("cemail")
+        cname = request.form.get("cname")
+        region = request.form.get("region")
+        
+        result = write_blob(data={
+            "name": cname,
+            "email": emailid,
+            "region": region
+        },tablename = "wholesalehandlers")
+        
+        if result:
+            return redirect(url_for( 'collectiontable' ))
+        else:
+            return render_template("Collection.html")
+        
 
-    return render_template("handlerreception.html")
+    return render_template("handlerwholesaler.html")
 
 
 
 
-@app.route('/wholesaler')
+@app.route('/wholesaler',methods =["GET", "POST"])
 def wholesaler():
+    if request.method=="POST":
+        containerId = request.form.get("cid")
+        wholesalerId = request.form.get("wid")
+        wholesalerName = request.form.get("wname")
+        productQuantity = request.form.get("wquantity")
+        collectionDate = request.form.get("collectiondate")
+        shippingDate = request.form.get("shippingdate")
+        file = request.files['pimage']
+
+        bufdata = file.read()
+        imgbytedata = BytesIO(bufdata)
+        
+        org_img, img= my_tf_mod.preprocess(file,imgbytedata)
+        print(img.shape)
+        fruit_dict=my_tf_mod.classify_fruit(img)
+        rotten=my_tf_mod.check_rotten(img)
+
+        # {'apple': 100.0, 'banana': 0.0, 'orange': 0.0}
+        # [98.3, 1.7]
+        result = write_blob(
+            data={
+            "containerID": containerId,
+            "wholesalerId":wholesalerId,
+            "wholesalerName": wholesalerName,
+            "productQuantity": productQuantity,
+            "collectionDate": collectionDate,
+            "shippingDate": shippingDate,
+            "productImg": bufdata,
+            "fresh":  rotten[0],
+            "rotten": rotten[1],
+            "apple": fruit_dict['apple'],
+            "banana": fruit_dict['banana'],
+            "orange": fruit_dict['orange']
+            },
+            tablename="wholesalerdetails")
+        if result:
+            return redirect(url_for( 'collectiontable' ))
+        else:
+            return render_template("Collection.html")
+        
+        
+        
+
+        # difference =datetime.strptime(shippingDate, '%Y-%m-%d') - datetime.strptime(collectionDate, '%Y-%m-%d') 
+        # print(difference.days)
+        
+       
+        
     return render_template("wholesaler.html")
 
 
@@ -196,6 +262,29 @@ watch this..
 def treatment():
     return render_template("Treatment.html")
 
+
+
+
+@app.route('/retail_handler',methods =["GET", "POST"])
+def retail_handler():
+    if request.method == "POST":
+        emailid=request.form.get("cemail")
+        cname = request.form.get("cname")
+        region = request.form.get("region")
+        
+        result = write_blob(data={
+            "name": cname,
+            "email": emailid,
+            "region": region
+        },tablename = "retailhandlers")
+        
+        if result:
+            return redirect(url_for( 'collectiontable' ))
+        else:
+            return render_template("Collection.html")
+        
+
+    return render_template("handlerretailer.html")
 
 
 
