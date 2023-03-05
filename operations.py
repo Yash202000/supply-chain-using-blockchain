@@ -1,37 +1,30 @@
 import psycopg2
-from connection import create_connection
+from connection import create_connection, create_web3_connection
 import numpy as np
 
 
-"""_summary_
+conn, curr = create_connection()
+contract = create_web3_connection()
 
-Returns:
-    _type_: _description_
-"""
-
-""""""
-
-
-
-ML_MODEL = None
-ML_MODEL_FILE = "model.pt"
-TORCH_DEVICE = "cpu"
 
 
 def create_table():
     try:
         # Get the cursor object from the connection object
-        conn, curr = create_connection()
+        
         try:
             # Fire the CREATE query
-            curr.execute("CREATE TABLE IF NOT EXISTS \
-                        collectiondetails(containerID INTEGER, farmerid INTEGER, farmername TEXT,productname TEXT, quantity INTEGER, region TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4);")
+
+            conn, curr = create_connection()
 
             curr.execute("CREATE TABLE IF NOT EXISTS \
-                        wholesalerdetails(containerID INTEGER, wholesalerId INTEGER, name TEXT, quantity INTEGER, collectionDate TEXT, shippingDate TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4)")
+                        collectiondetails(containerID INTEGER, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4);")
+
+            curr.execute("CREATE TABLE IF NOT EXISTS \
+                        wholesalerdetails(containerID INTEGER, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4)")
             
             curr.execute("CREATE TABLE IF NOT EXISTS \
-                        retailerdetails(containerID INTEGER, retailerId INTEGER, name TEXT, quantity INTEGER, collectionDate TEXT, shippingDate TEXT, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4)")
+                        retailerdetails(containerID INTEGER, productImg BYTEA, fresh float4,rotten float4,apple float4,banana float4,orange float4)")
             
             
             curr.execute("CREATE TABLE IF NOT EXISTS \
@@ -67,19 +60,27 @@ def write_blob(data=None,tablename = None):
     if tablename==None or data==None:
         return False
     
-    conn, curr = create_connection()
-
+  
     if tablename=="collectiondetails":
         try:
+
+            conn, curr = create_connection()
+            contract = create_web3_connection()
+
 
             curr.execute(f"select containerid from {tablename} where containerid={data['containerID']};")
             res = curr.fetchone()
             if res:
+                
                 return False
-
             
+            contract.functions.setCollectionDetail(data['farmername'],int(data['farmerid']),f"{data['productname']}",int(data['quantity']),f"{data['region']}",int(data['fresh']),"5-3-23").transact()
+            
+
             curr.execute(f"INSERT INTO collectiondetails\
-            (containerID,farmerid,farmername,productname,quantity , region , productImg,fresh ,rotten ,apple ,banana,orange )" +f" VALUES( {data['containerID']}, {data['farmerid']},' {data['farmername']}', '{data['productname']}', {data['quantity']},'{data['region']}', {psycopg2.Binary(data['productImg'])}, {data['fresh']},{data['rotten']},{data['apple']},{data['banana']},{data['orange']} );")
+            (containerID, productImg,fresh ,rotten ,apple ,banana,orange )" +f" VALUES( {data['containerID']}, {psycopg2.Binary(data['productImg'])}, {data['fresh']},{data['rotten']},{data['apple']},{data['banana']},{data['orange']} );")
+            
+            
             
             # Close the connection object
             conn.commit()
@@ -162,8 +163,11 @@ def read_blob_by_id(id,tablename):
     try:
         # Get the cursor object from the connection object
 
-        # Read data from a image file
         conn, curr = create_connection()
+        contract = create_web3_connection()
+
+
+        # Read data from a image file
         curr.execute(f"select * from {tablename} where containerID={id};")
         blob = curr.fetchone()
         # print(blob[0],blob[1],blob[2],blob[3],blob[4])
@@ -182,12 +186,25 @@ def read_blobs(tablename=None):
         return False
     
     try:
-        # Read data from a image file
-        conn, curr = create_connection()
-        if tablename=="collectiondetails":
 
-            curr.execute(f"select  containerid, farmerid , farmername , productname , quantity , region, fresh  from collectiondetails;")
-            results = curr.fetchall()
+        conn, curr = create_connection()
+        contract = create_web3_connection()
+
+        
+            
+
+        # Read data from a image file
+        if tablename=="collectiondetails":
+            collections = contract.functions.getCollectioncounter().call()
+            results = []
+            for i in range(1,collections+1):
+                col = contract.functions.getCollectionDetails(i).call()
+                col.insert(0,i)
+                results.append(col)
+
+            
+            
+
         elif tablename=="wholesalerdetails":
             curr.execute(f"select containerID, wholesalerId, name, quantity, collectionDate, shippingDate,  fresh  from wholesalerdetails;")
             results = curr.fetchall()
@@ -205,7 +222,10 @@ def read_blobs(tablename=None):
 
 
 def get_image_by_containerid_with_tablename(tablename,containerid):
+
     conn, curr = create_connection()
+    contract = create_web3_connection()
+
     print(tablename,containerid)
     curr.execute(f"select productimg from {tablename} where containerid={containerid};")
     blob = curr.fetchone()

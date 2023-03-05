@@ -71,8 +71,8 @@
                         <thead>
                             <tr class="table100-head">
                                 <th class="column1">ContainerID</th>
-                                <th class="column2">FarmerID </th>
-                                <th class="column3">Farmername</th>
+                                <th class="column2">FarmerName</th>
+                                <th class="column3">FarmerID</th>
                                 <th class="column4">Productname</th>
                                 <th class="column5">Quantity</th>
                                 <th class="column6">Region</th>
@@ -90,7 +90,7 @@
                                     <td>{{result[4]}}</td>
                                     <td>{{result[5]}}</td>
                                     <td>{{result[6]}}</td>
-                                    <td>{{result[7]}}</td>
+                                    <!-- <td>{{result[7]}}</td> -->
                                     <td><a href="http://localhost:5000/send_image?tablename=collectiondetails&containerid={{result[0]}}">Image</a></td>        
                                 </tr>
                             {% endfor %}

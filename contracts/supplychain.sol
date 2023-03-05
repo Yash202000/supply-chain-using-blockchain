@@ -25,7 +25,10 @@ contract SupplyTracker{
     uint public collectioncounter;
     struct Collectordetails {
         string farmername;
+        uint farmerid; //new
         string productname;
+        uint quantity; //new
+        string region; // new
         uint freshness;
         string collectiondate;
     }
@@ -39,6 +42,8 @@ contract SupplyTracker{
     uint public distributioncounter;
     struct Distributordetails {
         string productname;
+        uint distributorid; // new
+        uint quantity; //new
         uint freshness;
         string collectiondate;
         string shippingdate;
@@ -53,6 +58,8 @@ contract SupplyTracker{
     uint public retailcounter;
     struct Retailedetails {
         string productname;
+        uint retailerid; //new
+        uint quantity;//new
         uint freshness;
         string collectiondate;
         string shippingdate;
@@ -72,11 +79,14 @@ contract SupplyTracker{
 
     //function for setting up the collection details along with the initializing the Txblock with mapping the history.
     function setCollectionDetail(string memory _farmername,
+        uint _farmerid, 
         string memory _productname,
+        uint _quantity,
+        string memory _region,
         uint _freshness,
         string memory _collectiondate) public {
         
-        Collectordetails memory object = Collectordetails(_farmername,_productname,_freshness,_collectiondate);
+        Collectordetails memory object = Collectordetails(_farmername,_farmerid   ,_productname,_quantity,_region,_freshness,_collectiondate);
         collectioncounter += 1;
         containerid += 1;
         
@@ -91,6 +101,9 @@ contract SupplyTracker{
     //show me the collectiondetails for the given collection counter.
     function getCollectionDetails(uint  _id) view public returns (
         string memory,
+        uint,
+        string memory,
+        uint,
         string memory,
         uint,
         string memory
@@ -100,7 +113,10 @@ contract SupplyTracker{
         
         return (
             object.farmername,
+            object.farmerid,
             object.productname,
+            object.quantity,
+            object.region,
             object.freshness,
             object.collectiondate
         );
@@ -110,11 +126,13 @@ contract SupplyTracker{
     function setDistributiondetails(
         uint _containerid,
         string memory _productname,
+        uint _distributorid,// new
+        uint _quantity,
         uint _freshness,
         string memory _collectiondate,
         string memory _shippingdate) public {
         
-        Distributordetails memory object = Distributordetails(_productname,_freshness,_collectiondate,_shippingdate);
+        Distributordetails memory object = Distributordetails(_productname,_distributorid,_quantity,_freshness,_collectiondate,_shippingdate);
         distributioncounter += 1;
         
         Txblocks memory memblock = containerhistory[_containerid];
@@ -128,6 +146,8 @@ contract SupplyTracker{
     function getDistributiondetails(uint  _id) view public returns (
         string memory,
         uint,
+        uint,
+        uint,
         string memory,
         string memory
         ){
@@ -136,6 +156,8 @@ contract SupplyTracker{
         
         return (
             object.productname,
+            object.distributorid,
+            object.quantity,
             object.freshness,
             object.collectiondate,
             object.shippingdate
@@ -146,11 +168,13 @@ contract SupplyTracker{
     function setRetailerdetails(
         uint _containerid,
         string memory _productname,
+        uint _retailerid,
+        uint _quantity,
         uint _freshness,
         string memory _collectiondate,
         string memory _shippingdate) public {
         
-        Retailedetails memory object = Retailedetails(_productname,_freshness,_collectiondate,_shippingdate);
+        Retailedetails memory object = Retailedetails(_productname,_retailerid,_quantity,_freshness,_collectiondate,_shippingdate);
         retailcounter += 1;
         
         Txblocks memory memblock = containerhistory[_containerid];
@@ -164,6 +188,8 @@ contract SupplyTracker{
     function getRetaildetails(uint _id) view public returns (
         string memory,
         uint,
+        uint,
+        uint,
         string memory,
         string memory
         ){
@@ -172,6 +198,8 @@ contract SupplyTracker{
         
         return (
             object.productname,
+            object.retailerid,
+            object.quantity,
             object.freshness,
             object.collectiondate,
             object.shippingdate
