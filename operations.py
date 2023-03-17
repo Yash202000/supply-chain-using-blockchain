@@ -57,6 +57,9 @@ def write_blob(data=None,tablename = None):
     # Get the cursor object from the connection object
 
     # Read data from a image file
+
+   
+
     if tablename==None or data==None:
         return False
     
@@ -93,20 +96,33 @@ def write_blob(data=None,tablename = None):
 
 
     elif tablename=="wholesalerdetails":
+        print("inside the wholesalerdetails table ")
         try:
+            conn, curr = create_connection()
+            contract = create_web3_connection()
+            
+
+            
 
             curr.execute(f"select containerid from collectiondetails where containerid={data['containerID']};")
             res = curr.fetchone()
-            if res:
-               
-                curr.execute(f"INSERT INTO {tablename}\
-                (containerID, wholesalerId, name, quantity, collectionDate, shippingDate, productImg, fresh, rotten, apple, banana, orange )" +f" VALUES( {data['containerID']}, {data['wholesalerId']},' {data['wholesalerName']}', '{data['productQuantity']}', '{data['collectionDate']}','{data['shippingDate']}', {psycopg2.Binary(data['productImg'])}, {data['fresh']},{data['rotten']},{data['apple']},{data['banana']},{data['orange']} );")
-                
-                # Close the connection object
-                conn.commit()
-                conn.close()
-                return True
-            return False
+            
+            if len(res)==0:
+                return False
+            
+            
+            
+            contract.functions.setDistributiondetails(int(data['containerID']),f"{data['productname']}",int(data['wholesalerId']),int(data['productQuantity']),int(data['fresh']),f"{data['collectionDate']}",f"{data['shippingDate']}").transact()
+            
+            
+            curr.execute(f"INSERT INTO {tablename}\
+            (containerID, productImg,fresh ,rotten ,apple ,banana,orange )" +f" VALUES( {data['containerID']}, {psycopg2.Binary(data['productImg'])}, {data['fresh']},{data['rotten']},{data['apple']},{data['banana']},{data['orange']} );")
+            
+            # Close the connection object
+            conn.commit()
+            conn.close()
+            return True
+        
 
         except(Exception, psycopg2.Error) as error:
             # Print exception
@@ -114,20 +130,27 @@ def write_blob(data=None,tablename = None):
     
     elif tablename=='retailerdetails':
         try:
+            conn, curr = create_connection()
+            contract = create_web3_connection()
 
             curr.execute(f"select containerid from wholesalerdetails where containerid={data['containerID']};")
             res = curr.fetchone()
-            if res:
-               
-                curr.execute(f"INSERT INTO {tablename}\
-                (containerID, retailerId, name, quantity, collectionDate, shippingDate, productImg, fresh, rotten, apple, banana, orange )" +f" VALUES( {data['containerID']}, {data['retailerId']},' {data['wholesalerName']}', '{data['productQuantity']}', '{data['collectionDate']}','{data['shippingDate']}', {psycopg2.Binary(data['productImg'])}, {data['fresh']},{data['rotten']},{data['apple']},{data['banana']},{data['orange']} );")
-                
-                # Close the connection object
-                conn.commit()
-                conn.close()
-                return True
-            return False
-
+            
+            
+            if len(res)==0:
+                return False
+            
+            contract.functions.setRetailerdetails(int(data['containerID']),f"{data['productName']}",int(data['retailerId']),int(data['productQuantity']),int(data['fresh']),f"{data['collectionDate']}",f"{data['shippingDate']}").transact()
+            
+            
+            curr.execute(f"INSERT INTO {tablename}\
+            (containerID, productImg,fresh ,rotten ,apple ,banana,orange )" +f" VALUES( {data['containerID']}, {psycopg2.Binary(data['productImg'])}, {data['fresh']},{data['rotten']},{data['apple']},{data['banana']},{data['orange']} );")
+            
+            # Close the connection object
+            conn.commit()
+            conn.close()
+            return True
+        
         except(Exception, psycopg2.Error) as error:
             # Print exception
             print("Error while creating cartoon table", error)
@@ -206,12 +229,21 @@ def read_blobs(tablename=None):
             
 
         elif tablename=="wholesalerdetails":
-            curr.execute(f"select containerID, wholesalerId, name, quantity, collectionDate, shippingDate,  fresh  from wholesalerdetails;")
-            results = curr.fetchall()
+            collections = contract.functions.getDistributioncounter().call()
+            results = []
+            for i in range(1,collections+1):
+                col = contract.functions.getDistributiondetails(i).call()
+                col.insert(0,i)
+                results.append(col)
+
         
         elif tablename=="retailerdetails":
-            curr.execute(f"select containerID, retailerId, name, quantity, collectionDate, shippingDate,  fresh  from retailerdetails;")
-            results = curr.fetchall()
+            collections = contract.functions.getRetailcounter().call()
+            results = []
+            for i in range(1,collections+1):
+                col = contract.functions.getRetaildetails(i).call()
+                col.insert(0,i)
+                results.append(col)
         
         return results
     except(Exception, psycopg2.Error) as error:

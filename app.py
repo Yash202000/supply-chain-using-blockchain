@@ -204,6 +204,7 @@ def wholesaler():
         containerId = request.form.get("cid")
         wholesalerId = request.form.get("wid")
         wholesalerName = request.form.get("wname")
+        productname = request.form.get('pname')
         productQuantity = request.form.get("wquantity")
         collectionDate = request.form.get("collectiondate")
         shippingDate = request.form.get("shippingdate")
@@ -225,6 +226,7 @@ def wholesaler():
             "wholesalerId":wholesalerId,
             "wholesalerName": wholesalerName,
             "productQuantity": productQuantity,
+            "productname": productname,
             "collectionDate": collectionDate,
             "shippingDate": shippingDate,
             "productImg": bufdata,
@@ -272,6 +274,7 @@ def retailer():
         wholesalerId = request.form.get("wid")
         wholesalerName = request.form.get("wname")
         productQuantity = request.form.get("wquantity")
+        productname = request.form.get('pname')
         collectionDate = request.form.get("collectiondate")
         shippingDate = request.form.get("shippingdate")
         file = request.files['pimage']
@@ -290,6 +293,7 @@ def retailer():
             "retailerId":wholesalerId,
             "wholesalerName": wholesalerName,
             "productQuantity": productQuantity,
+            "productName": productname,
             "collectionDate": collectionDate,
             "shippingDate": shippingDate,
             "productImg": bufdata,
@@ -339,7 +343,7 @@ def retailtable():
         results = read_blobs(tablename='retailerdetails')
         print(results)
         
-        return render_template("CollectionTable.html",results=results)
+        return render_template("retailTable.html",results=results)
 
 
 @app.route('/customer')
